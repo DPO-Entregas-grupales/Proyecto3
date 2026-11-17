@@ -1,27 +1,207 @@
 {
+    "torneos": [],
+    "reservas": [
+        {
+            "fecha": "2026-11-05",
+            "nombreInstalacion": "Cancha de Pádel 1",
+            "modalidad": "Dobles",
+            "idSocio": "8",
+            "cantidadJugadores": 4,
+            "idReserva": "1",
+            "horaInicio": "18"
+        },
+        {
+            "fecha": "2026-11-05",
+            "nombreInstalacion": "Cancha de Tenis A",
+            "modalidad": "Sencillos",
+            "idSocio": "7",
+            "cantidadJugadores": 2,
+            "idReserva": "2",
+            "horaInicio": "16"
+        }
+    ],
+    "instalaciones": [
+        {
+            "tipo": "Cancha de Fútbol",
+            "horarios": [
+                {
+                    "fecha": "2026-11-02",
+                    "hora": "16",
+                    "disponible": true
+                },
+                {
+                    "fecha": "2026-11-02",
+                    "hora": "17",
+                    "disponible": true
+                },
+                {
+                    "fecha": "2026-11-02",
+                    "hora": "18",
+                    "disponible": true
+                }
+            ],
+            "esTechada": false,
+            "nombreDeporte": "Fútbol",
+            "nombre": "Cancha Principal",
+            "capacidadMaximaJugadores": 22
+        },
+        {
+            "tipo": "Cancha de Pádel",
+            "horarios": [
+                {
+                    "fecha": "2026-11-05",
+                    "hora": "16",
+                    "disponible": true
+                },
+                {
+                    "fecha": "2026-11-05",
+                    "hora": "18",
+                    "disponible": false
+                },
+                {
+                    "fecha": "2026-11-05",
+                    "hora": "17",
+                    "disponible": true
+                }
+            ],
+            "esTechada": true,
+            "nombreDeporte": "Pádel",
+            "nombre": "Cancha de Pádel 1",
+            "capacidadMaximaJugadores": 4
+        },
+        {
+            "tipo": "Cancha de Tenis",
+            "horarios": [
+                {
+                    "fecha": "2026-11-05",
+                    "hora": "16",
+                    "disponible": false
+                },
+                {
+                    "fecha": "2026-11-05",
+                    "hora": "18",
+                    "disponible": true
+                },
+                {
+                    "fecha": "2026-11-05",
+                    "hora": "17",
+                    "disponible": true
+                }
+            ],
+            "esTechada": false,
+            "nombreDeporte": "Tenis",
+            "nombre": "Cancha de Tenis A",
+            "capacidadMaximaJugadores": 4
+        },
+        {
+            "tipo": "Cancha de Tenis",
+            "horarios": [
+                {
+                    "fecha": "2026-11-05",
+                    "hora": "16",
+                    "disponible": true
+                },
+                {
+                    "fecha": "2026-11-05",
+                    "hora": "18",
+                    "disponible": true
+                },
+                {
+                    "fecha": "2026-11-05",
+                    "hora": "17",
+                    "disponible": true
+                }
+            ],
+            "esTechada": false,
+            "nombreDeporte": "Tenis",
+            "nombre": "Cancha de Tenis C",
+            "capacidadMaximaJugadores": 4
+        },
+        {
+            "tipo": "Mesa de Tenis de Mesa",
+            "horarios": [
+                {
+                    "fecha": "2026-11-05",
+                    "hora": "16",
+                    "disponible": true
+                },
+                {
+                    "fecha": "2026-11-05",
+                    "hora": "17",
+                    "disponible": true
+                }
+            ],
+            "esTechada": true,
+            "nombreDeporte": "Tenis de Mesa",
+            "nombre": "Mesa de Tenis de Mesa 1",
+            "capacidadMaximaJugadores": 2
+        },
+        {
+            "tipo": "Cancha de Tenis",
+            "horarios": [
+                {
+                    "fecha": "2026-11-05",
+                    "hora": "16",
+                    "disponible": true
+                },
+                {
+                    "fecha": "2026-11-05",
+                    "hora": "18",
+                    "disponible": true
+                },
+                {
+                    "fecha": "2026-11-05",
+                    "hora": "17",
+                    "disponible": true
+                }
+            ],
+            "esTechada": false,
+            "nombreDeporte": "Tenis",
+            "nombre": "Cancha de Tenis B",
+            "capacidadMaximaJugadores": 4
+        }
+    ],
     "deportes": [
         {
-            "nombreDeporte": "Fútbol",
+            "minJugadores": 1,
+            "permiteEmpate": false,
+            "puntosDerrota": 0,
+            "maxInstalacionesSimultaneas": 0,
+            "posiciones": [],
+            "puntosEmpate": 0,
+            "nombreDeporte": "Tenis de Mesa",
+            "puntosVictoria": 2
+        },
+        {
             "minJugadores": 7,
             "permiteEmpate": true,
-            "puntosVictoria": 3,
             "puntosDerrota": 0,
-            "puntosEmpate": 1,
+            "maxInstalacionesSimultaneas": 0,
             "posiciones": [
                 "Portero",
                 "Defensa",
                 "Mediocampista",
                 "Delantero"
             ],
-            "maxInstalacionesSimultaneas": 0
+            "puntosEmpate": 1,
+            "nombreDeporte": "Fútbol",
+            "puntosVictoria": 3
         },
         {
-            "nombreDeporte": "Baloncesto",
+            "minJugadores": 1,
+            "permiteEmpate": false,
+            "puntosDerrota": 0,
+            "maxInstalacionesSimultaneas": 0,
+            "posiciones": [],
+            "puntosEmpate": 0,
+            "nombreDeporte": "Pádel",
+            "puntosVictoria": 2
+        },
+        {
             "minJugadores": 5,
             "permiteEmpate": false,
-            "puntosVictoria": 2,
             "puntosDerrota": 0,
-            "puntosEmpate": 0,
+            "maxInstalacionesSimultaneas": 0,
             "posiciones": [
                 "Base",
                 "Escolta",
@@ -29,552 +209,331 @@
                 "Ala-pívot",
                 "Pívot"
             ],
-            "maxInstalacionesSimultaneas": 0
+            "puntosEmpate": 0,
+            "nombreDeporte": "Baloncesto",
+            "puntosVictoria": 2
         },
         {
+            "minJugadores": 1,
+            "permiteEmpate": false,
+            "puntosDerrota": 0,
+            "maxInstalacionesSimultaneas": 2,
+            "posiciones": [],
+            "puntosEmpate": 0,
             "nombreDeporte": "Tenis",
-            "minJugadores": 1,
-            "permiteEmpate": false,
-            "puntosVictoria": 2,
-            "puntosDerrota": 0,
-            "puntosEmpate": 0,
-            "posiciones": [],
-            "maxInstalacionesSimultaneas": 2
-        },
-        {
-            "nombreDeporte": "Pádel",
-            "minJugadores": 1,
-            "permiteEmpate": false,
-            "puntosVictoria": 2,
-            "puntosDerrota": 0,
-            "puntosEmpate": 0,
-            "posiciones": [],
-            "maxInstalacionesSimultaneas": 0
-        },
-        {
-            "nombreDeporte": "Tenis de Mesa",
-            "minJugadores": 1,
-            "permiteEmpate": false,
-            "puntosVictoria": 2,
-            "puntosDerrota": 0,
-            "puntosEmpate": 0,
-            "posiciones": [],
-            "maxInstalacionesSimultaneas": 0
+            "puntosVictoria": 2
         }
     ],
-    "equipos": [
+    "competencias": [{
+        "anioTemporada": "2026",
+        "formato": "Eliminatoria",
+        "categoria": 99,
+        "nombreCompetencia": "Copa Séneca 2026",
+        "entidadOrganizadora": "ASCUN",
+        "faseActual": "Fase de Grupos"
+    }],
+    "partidos": [
         {
+            "fecha": "2026-10-10",
+            "tipoPartido": "INTERNO",
+            "marcadorFinal": "2-1",
+            "idPartido": "1",
+            "estadoPartido": "Finalizado",
+            "nombreEquipo1": "Leones FC",
+            "nombreEquipo2": "Águilas FC"
+        },
+        {
+            "escenario": "Estadio Norte",
+            "fecha": "2026-10-17",
+            "tipoPartido": "COMPETENCIA",
             "nombreEquipo": "Leones FC",
-            "cupoMaximo": 10,
-            "categoriaEdad": 99,
-            "nombreDeporte": "Fútbol"
-        },
-        {
-            "nombreEquipo": "Águilas FC",
-            "cupoMaximo": 8,
-            "categoriaEdad": 99,
-            "nombreDeporte": "Fútbol"
-        },
-        {
-            "nombreEquipo": "Cachorros Sub-13",
-            "cupoMaximo": 5,
-            "categoriaEdad": 13,
-            "nombreDeporte": "Fútbol"
-        },
-        {
-            "nombreEquipo": "Tigres",
-            "cupoMaximo": 8,
-            "categoriaEdad": 99,
-            "nombreDeporte": "Baloncesto"
-        }
-    ],
-    "competencias": [
-        {
+            "marcadorFinal": "3-0",
             "nombreCompetencia": "Copa Séneca 2026",
-            "entidadOrganizadora": "ASCUN",
-            "anioTemporada": "2026",
-            "formato": "Eliminatoria",
-            "faseActual": "Fase de Grupos",
-            "categoria": 99
+            "idPartido": "2",
+            "institucionRival": "Universidad Norte",
+            "estadoPartido": "Finalizado"
+        },
+        {
+            "fecha": "2026-11-02",
+            "tipoPartido": "INTERNO",
+            "marcadorFinal": "0-0",
+            "idPartido": "3",
+            "estadoPartido": "Programado",
+            "nombreEquipo1": "Leones FC",
+            "nombreEquipo2": "Águilas FC"
+        },
+        {
+            "escenario": "Estadio Séneca",
+            "fecha": "2026-11-09",
+            "tipoPartido": "COMPETENCIA",
+            "nombreEquipo": "Leones FC",
+            "marcadorFinal": "0-0",
+            "nombreCompetencia": "Copa Séneca 2026",
+            "idPartido": "4",
+            "institucionRival": "Club Andes",
+            "estadoPartido": "Programado"
         }
     ],
     "inscripcionesEquipo": [
         {
-            "idSocio": "7",
-            "nombreEquipo": "Leones FC",
             "posicion": "Delantero",
             "numeroCamiseta": 9,
+            "estaSuspendido": false,
+            "nombreEquipo": "Leones FC",
             "tarjetasAmarillasAcumuladas": 1,
-            "estaSuspendido": false
+            "idSocio": "7"
         },
         {
-            "idSocio": "16",
-            "nombreEquipo": "Leones FC",
             "posicion": "Portero",
             "numeroCamiseta": 1,
+            "estaSuspendido": false,
+            "nombreEquipo": "Leones FC",
             "tarjetasAmarillasAcumuladas": 0,
-            "estaSuspendido": false
+            "idSocio": "16"
         },
         {
-            "idSocio": "17",
-            "nombreEquipo": "Leones FC",
             "posicion": "Defensa",
             "numeroCamiseta": 2,
+            "estaSuspendido": false,
+            "nombreEquipo": "Leones FC",
             "tarjetasAmarillasAcumuladas": 0,
-            "estaSuspendido": false
+            "idSocio": "17"
         },
         {
-            "idSocio": "18",
-            "nombreEquipo": "Leones FC",
             "posicion": "Defensa",
             "numeroCamiseta": 3,
+            "estaSuspendido": false,
+            "nombreEquipo": "Leones FC",
             "tarjetasAmarillasAcumuladas": 0,
-            "estaSuspendido": false
+            "idSocio": "18"
         },
         {
-            "idSocio": "19",
-            "nombreEquipo": "Leones FC",
             "posicion": "Mediocampista",
             "numeroCamiseta": 4,
+            "estaSuspendido": false,
+            "nombreEquipo": "Leones FC",
             "tarjetasAmarillasAcumuladas": 0,
-            "estaSuspendido": false
+            "idSocio": "19"
         },
         {
-            "idSocio": "20",
-            "nombreEquipo": "Leones FC",
             "posicion": "Mediocampista",
             "numeroCamiseta": 5,
+            "estaSuspendido": false,
+            "nombreEquipo": "Leones FC",
             "tarjetasAmarillasAcumuladas": 0,
-            "estaSuspendido": false
+            "idSocio": "20"
         },
         {
-            "idSocio": "21",
-            "nombreEquipo": "Leones FC",
             "posicion": "Delantero",
             "numeroCamiseta": 7,
+            "estaSuspendido": false,
+            "nombreEquipo": "Leones FC",
             "tarjetasAmarillasAcumuladas": 0,
-            "estaSuspendido": false
+            "idSocio": "21"
         },
         {
-            "idSocio": "22",
-            "nombreEquipo": "Leones FC",
             "posicion": "Delantero",
             "numeroCamiseta": 11,
+            "estaSuspendido": false,
+            "nombreEquipo": "Leones FC",
             "tarjetasAmarillasAcumuladas": 0,
-            "estaSuspendido": false
+            "idSocio": "22"
         },
         {
-            "idSocio": "23",
-            "nombreEquipo": "Águilas FC",
             "posicion": "Portero",
             "numeroCamiseta": 1,
+            "estaSuspendido": false,
+            "nombreEquipo": "Águilas FC",
             "tarjetasAmarillasAcumuladas": 0,
-            "estaSuspendido": false
+            "idSocio": "23"
         },
         {
-            "idSocio": "24",
-            "nombreEquipo": "Águilas FC",
             "posicion": "Defensa",
             "numeroCamiseta": 2,
+            "estaSuspendido": false,
+            "nombreEquipo": "Águilas FC",
             "tarjetasAmarillasAcumuladas": 0,
-            "estaSuspendido": false
+            "idSocio": "24"
         },
         {
-            "idSocio": "25",
-            "nombreEquipo": "Águilas FC",
             "posicion": "Defensa",
             "numeroCamiseta": 3,
+            "estaSuspendido": false,
+            "nombreEquipo": "Águilas FC",
             "tarjetasAmarillasAcumuladas": 0,
-            "estaSuspendido": false
+            "idSocio": "25"
         },
         {
-            "idSocio": "26",
-            "nombreEquipo": "Águilas FC",
             "posicion": "Mediocampista",
             "numeroCamiseta": 4,
+            "estaSuspendido": false,
+            "nombreEquipo": "Águilas FC",
             "tarjetasAmarillasAcumuladas": 0,
-            "estaSuspendido": false
+            "idSocio": "26"
         },
         {
-            "idSocio": "27",
-            "nombreEquipo": "Águilas FC",
             "posicion": "Mediocampista",
             "numeroCamiseta": 5,
+            "estaSuspendido": false,
+            "nombreEquipo": "Águilas FC",
             "tarjetasAmarillasAcumuladas": 0,
-            "estaSuspendido": false
+            "idSocio": "27"
         },
         {
-            "idSocio": "28",
-            "nombreEquipo": "Águilas FC",
             "posicion": "Delantero",
             "numeroCamiseta": 7,
+            "estaSuspendido": false,
+            "nombreEquipo": "Águilas FC",
             "tarjetasAmarillasAcumuladas": 0,
-            "estaSuspendido": false
+            "idSocio": "28"
         },
         {
-            "idSocio": "29",
-            "nombreEquipo": "Águilas FC",
             "posicion": "Delantero",
             "numeroCamiseta": 9,
+            "estaSuspendido": false,
+            "nombreEquipo": "Águilas FC",
             "tarjetasAmarillasAcumuladas": 0,
-            "estaSuspendido": false
+            "idSocio": "29"
         },
         {
-            "idSocio": "30",
-            "nombreEquipo": "Tigres",
             "posicion": "Base",
             "numeroCamiseta": 4,
+            "estaSuspendido": false,
+            "nombreEquipo": "Tigres",
             "tarjetasAmarillasAcumuladas": 0,
-            "estaSuspendido": false
+            "idSocio": "30"
         },
         {
-            "idSocio": "31",
-            "nombreEquipo": "Tigres",
             "posicion": "Escolta",
             "numeroCamiseta": 5,
+            "estaSuspendido": false,
+            "nombreEquipo": "Tigres",
             "tarjetasAmarillasAcumuladas": 0,
-            "estaSuspendido": false
+            "idSocio": "31"
         },
         {
-            "idSocio": "32",
-            "nombreEquipo": "Tigres",
             "posicion": "Alero",
             "numeroCamiseta": 6,
+            "estaSuspendido": false,
+            "nombreEquipo": "Tigres",
             "tarjetasAmarillasAcumuladas": 0,
-            "estaSuspendido": false
+            "idSocio": "32"
         },
         {
-            "idSocio": "33",
-            "nombreEquipo": "Tigres",
             "posicion": "Ala-pívot",
             "numeroCamiseta": 7,
+            "estaSuspendido": false,
+            "nombreEquipo": "Tigres",
             "tarjetasAmarillasAcumuladas": 0,
-            "estaSuspendido": false
+            "idSocio": "33"
         },
         {
-            "idSocio": "34",
-            "nombreEquipo": "Tigres",
             "posicion": "Pívot",
             "numeroCamiseta": 8,
+            "estaSuspendido": true,
+            "nombreEquipo": "Tigres",
             "tarjetasAmarillasAcumuladas": 0,
-            "estaSuspendido": true
-        }
-    ],
-    "inscripcionesCompetencia": [
-        {
-            "nombreEquipo": "Leones FC",
-            "nombreCompetencia": "Copa Séneca 2026",
-            "puntosAcumulados": 3,
-            "posicion": "-"
+            "idSocio": "34"
         }
     ],
     "inscripcionesIndividual": [
         {
+            "puntajeRanking": 4,
             "idSocio": "7",
             "nombreDeporte": "Tenis",
-            "nivel": "Intermedio",
-            "puntajeRanking": 4
+            "nivel": "Intermedio"
         },
         {
+            "puntajeRanking": 0,
             "idSocio": "8",
             "nombreDeporte": "Tenis",
-            "nivel": "Principiante",
-            "puntajeRanking": 0
+            "nivel": "Principiante"
         },
         {
+            "puntajeRanking": 10,
             "idSocio": "12",
             "nombreDeporte": "Tenis",
-            "nivel": "Avanzado",
-            "puntajeRanking": 10
+            "nivel": "Avanzado"
         },
         {
+            "puntajeRanking": 0,
             "idSocio": "13",
             "nombreDeporte": "Tenis",
-            "nivel": "Principiante",
-            "puntajeRanking": 0
-        }
-    ],
-    "instalaciones": [
-        {
-            "nombre": "Cancha Principal",
-            "tipo": "Cancha de Fútbol",
-            "esTechada": false,
-            "capacidadMaximaJugadores": 22,
-            "horarios": [
-                {
-                    "fecha": "2026-11-02",
-                    "hora": "16",
-                    "disponible": true
-                },
-                {
-                    "fecha": "2026-11-02",
-                    "hora": "17",
-                    "disponible": true
-                },
-                {
-                    "fecha": "2026-11-02",
-                    "hora": "18",
-                    "disponible": true
-                }
-            ],
-            "nombreDeporte": "Fútbol"
-        },
-        {
-            "nombre": "Cancha de Tenis A",
-            "tipo": "Cancha de Tenis",
-            "esTechada": false,
-            "capacidadMaximaJugadores": 4,
-            "horarios": [
-                {
-                    "fecha": "2026-11-05",
-                    "hora": "16",
-                    "disponible": false
-                },
-                {
-                    "fecha": "2026-11-05",
-                    "hora": "17",
-                    "disponible": true
-                },
-                {
-                    "fecha": "2026-11-05",
-                    "hora": "18",
-                    "disponible": true
-                }
-            ],
-            "nombreDeporte": "Tenis"
-        },
-        {
-            "nombre": "Cancha de Pádel 1",
-            "tipo": "Cancha de Pádel",
-            "esTechada": true,
-            "capacidadMaximaJugadores": 4,
-            "horarios": [
-                {
-                    "fecha": "2026-11-05",
-                    "hora": "16",
-                    "disponible": true
-                },
-                {
-                    "fecha": "2026-11-05",
-                    "hora": "17",
-                    "disponible": true
-                },
-                {
-                    "fecha": "2026-11-05",
-                    "hora": "18",
-                    "disponible": false
-                }
-            ],
-            "nombreDeporte": "Pádel"
-        },
-        {
-            "nombre": "Cancha de Tenis B",
-            "tipo": "Cancha de Tenis",
-            "esTechada": false,
-            "capacidadMaximaJugadores": 4,
-            "nombreDeporte": "Tenis",
-            "horarios": [
-                {
-                    "fecha": "2026-11-05",
-                    "hora": "16",
-                    "disponible": true
-                },
-                {
-                    "fecha": "2026-11-05",
-                    "hora": "17",
-                    "disponible": true
-                },
-                {
-                    "fecha": "2026-11-05",
-                    "hora": "18",
-                    "disponible": true
-                }
-            ]
-        },
-        {
-            "nombre": "Cancha de Tenis C",
-            "tipo": "Cancha de Tenis",
-            "esTechada": false,
-            "capacidadMaximaJugadores": 4,
-            "nombreDeporte": "Tenis",
-            "horarios": [
-                {
-                    "fecha": "2026-11-05",
-                    "hora": "16",
-                    "disponible": true
-                },
-                {
-                    "fecha": "2026-11-05",
-                    "hora": "17",
-                    "disponible": true
-                },
-                {
-                    "fecha": "2026-11-05",
-                    "hora": "18",
-                    "disponible": true
-                }
-            ]
-        },
-        {
-            "nombre": "Mesa de Tenis de Mesa 1",
-            "tipo": "Mesa de Tenis de Mesa",
-            "esTechada": true,
-            "capacidadMaximaJugadores": 2,
-            "nombreDeporte": "Tenis de Mesa",
-            "horarios": [
-                {
-                    "fecha": "2026-11-05",
-                    "hora": "16",
-                    "disponible": true
-                },
-                {
-                    "fecha": "2026-11-05",
-                    "hora": "17",
-                    "disponible": true
-                }
-            ]
-        }
-    ],
-    "reservas": [
-        {
-            "idReserva": "1",
-            "idSocio": "8",
-            "nombreInstalacion": "Cancha de Pádel 1",
-            "fecha": "2026-11-05",
-            "horaInicio": "18",
-            "cantidadJugadores": 4,
-            "modalidad": "Dobles"
-        },
-        {
-            "idReserva": "2",
-            "idSocio": "7",
-            "nombreInstalacion": "Cancha de Tenis A",
-            "fecha": "2026-11-05",
-            "horaInicio": "16",
-            "cantidadJugadores": 2,
-            "modalidad": "Sencillos"
-        }
-    ],
-    "partidos": [
-        {
-            "idPartido": "1",
-            "tipoPartido": "INTERNO",
-            "fecha": "2026-10-10",
-            "marcadorFinal": "2-1",
-            "estadoPartido": "Finalizado",
-            "nombreEquipo1": "Leones FC",
-            "nombreEquipo2": "Águilas FC"
-        },
-        {
-            "idPartido": "2",
-            "tipoPartido": "COMPETENCIA",
-            "fecha": "2026-10-17",
-            "marcadorFinal": "3-0",
-            "estadoPartido": "Finalizado",
-            "nombreEquipo": "Leones FC",
-            "institucionRival": "Universidad Norte",
-            "escenario": "Estadio Norte",
-            "nombreCompetencia": "Copa Séneca 2026"
-        },
-        {
-            "idPartido": "3",
-            "tipoPartido": "INTERNO",
-            "fecha": "2026-11-02",
-            "marcadorFinal": "0-0",
-            "estadoPartido": "Programado",
-            "nombreEquipo1": "Leones FC",
-            "nombreEquipo2": "Águilas FC"
-        },
-        {
-            "idPartido": "4",
-            "tipoPartido": "COMPETENCIA",
-            "fecha": "2026-11-09",
-            "marcadorFinal": "0-0",
-            "estadoPartido": "Programado",
-            "nombreEquipo": "Leones FC",
-            "institucionRival": "Club Andes",
-            "escenario": "Estadio Séneca",
-            "nombreCompetencia": "Copa Séneca 2026"
+            "nivel": "Principiante"
         }
     ],
     "estadisticas": [
         {
+            "tarjetasRojas": 0,
             "idEstadistica": "EST-1",
+            "tarjetasAmarillas": 1,
             "tipoEstadistica": "FUTBOL",
             "idSocio": "7",
             "idPartido": "1",
             "goles": 1,
-            "asistencias": 0,
-            "tarjetasAmarillas": 1,
-            "tarjetasRojas": 0
+            "asistencias": 0
         },
         {
+            "tarjetasRojas": 0,
             "idEstadistica": "EST-2",
+            "tarjetasAmarillas": 0,
             "tipoEstadistica": "FUTBOL",
             "idSocio": "7",
             "idPartido": "2",
             "goles": 2,
-            "asistencias": 1,
-            "tarjetasAmarillas": 0,
-            "tarjetasRojas": 0
+            "asistencias": 1
         },
         {
+            "tarjetasRojas": 0,
             "idEstadistica": "EST-3",
+            "tarjetasAmarillas": 0,
             "tipoEstadistica": "FUTBOL",
             "idSocio": "16",
             "idPartido": "2",
             "goles": 1,
-            "asistencias": 0,
-            "tarjetasAmarillas": 0,
-            "tarjetasRojas": 0
+            "asistencias": 0
         }
     ],
-    "sesionesEntrenamiento": [
-        {
-            "idEntrenamiento": "ENT-1",
-            "fecha": "2026-10-20",
-            "hora": "17:00",
-            "duracionMinutos": 90,
-            "idEntrenador": "2",
-            "idSocios": [
-                "7",
-                "16",
-                "17"
-            ],
-            "nombreInstalacion": "Cancha Principal"
-        }
-    ],
-    "asistenciaEvaluaciones": [
-        {
-            "estadoAsistencia": "Asistió",
-            "notaDesempeno": 4.5,
-            "comentario": "Buen ritmo",
-            "idSocio": "7",
-            "idEntrenamiento": "ENT-1"
-        }
-    ],
+    "asistenciaEvaluaciones": [{
+        "estadoAsistencia": "Asistió",
+        "notaDesempeno": 4.5,
+        "idEntrenamiento": "ENT-1",
+        "idSocio": "7",
+        "comentario": "Buen ritmo"
+    }],
+    "inscripcionesCompetencia": [{
+        "posicion": "-",
+        "nombreEquipo": "Leones FC",
+        "nombreCompetencia": "Copa Séneca 2026",
+        "puntosAcumulados": 3
+    }],
     "turnos": [
         {
-            "idTurno": "T1",
+            "diaSemana": 4,
+            "esDiurno": true,
+            "idEmpleados": [],
+            "idTurno": "T4"
+        },
+        {
             "diaSemana": 1,
             "esDiurno": true,
             "idEmpleados": [
                 "2",
                 "3",
                 "5"
-            ]
+            ],
+            "idTurno": "T1"
         },
         {
-            "idTurno": "T2",
             "diaSemana": 2,
             "esDiurno": true,
             "idEmpleados": [
                 "4",
                 "6"
-            ]
+            ],
+            "idTurno": "T2"
         },
         {
-            "idTurno": "T3",
             "diaSemana": 3,
             "esDiurno": true,
             "idEmpleados": [
@@ -583,14 +542,48 @@
                 "4",
                 "5",
                 "6"
-            ]
-        },
-        {
-            "idTurno": "T4",
-            "diaSemana": 4,
-            "esDiurno": true,
-            "idEmpleados": []
+            ],
+            "idTurno": "T3"
         }
     ],
-    "solicitudesCambioTurno": []
+    "sesionesEntrenamiento": [{
+        "fecha": "2026-10-20",
+        "nombreInstalacion": "Cancha Principal",
+        "hora": "17:00",
+        "idSocios": [
+            "7",
+            "16",
+            "17"
+        ],
+        "idEntrenamiento": "ENT-1",
+        "idEntrenador": "2",
+        "duracionMinutos": 90
+    }],
+    "solicitudesCambioTurno": [],
+    "equipos": [
+        {
+            "cupoMaximo": 8,
+            "nombreEquipo": "Tigres",
+            "nombreDeporte": "Baloncesto",
+            "categoriaEdad": 99
+        },
+        {
+            "cupoMaximo": 5,
+            "nombreEquipo": "Cachorros Sub-13",
+            "nombreDeporte": "Fútbol",
+            "categoriaEdad": 13
+        },
+        {
+            "cupoMaximo": 10,
+            "nombreEquipo": "Leones FC",
+            "nombreDeporte": "Fútbol",
+            "categoriaEdad": 99
+        },
+        {
+            "cupoMaximo": 8,
+            "nombreEquipo": "Águilas FC",
+            "nombreDeporte": "Fútbol",
+            "categoriaEdad": 99
+        }
+    ]
 }
