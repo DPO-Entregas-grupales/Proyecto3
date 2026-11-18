@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 import Usuarios.Administrador;
 import Usuarios.Entrenador;
@@ -37,8 +38,8 @@ public class VentanaPrincipal extends JFrame {
 
     private void configurarVentana() {
         setTitle("Club Deportivo Séneca - Sistema de Gestión");
-        setSize(1050, 680);
-        setMinimumSize(new Dimension(900, 600));
+        setSize(1100, 700);
+        setMinimumSize(new Dimension(950, 620));
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -99,26 +100,40 @@ public class VentanaPrincipal extends JFrame {
 
         if (u instanceof Administrador) {
             agregarModulo("USUARIOS", "Gestión de Usuarios", new PanelAdminUsuarios(controlador));
-            agregarModulo("DEPORTES", "Deportes y Equipos", crearPanelEnConstruccion("Deportes, Equipos y Competencias"));
-            agregarModulo("INSTALACIONES", "Instalaciones y Turnos", crearPanelEnConstruccion("Instalaciones, Horarios y Turnos"));
-            agregarModulo("INVENTARIO", "Inventario Tienda/Cafetería", crearPanelEnConstruccion("Gestión de Tienda y Cafetería"));
-            agregarModulo("TORNEOS_ADMIN", "Partidos y Torneos", crearPanelEnConstruccion("Programar Partidos y Gestionar Torneos"));
-            agregarModulo("REPORTES", "Reportes y Consultas", crearPanelEnConstruccion("Reportes del Club y Ventas"));
+            agregarModulo("DEPORTES", "Deportes y Equipos", new PanelAdminDeportes(controlador));
+            agregarModulo("INSTALACIONES", "Instalaciones y Turnos", new PanelAdminInstalaciones(controlador));
+            agregarModulo("INVENTARIO", "Inventario Tienda/Cafetería", new PanelAdminInventario(controlador));
+            agregarModulo("TORNEOS_ADMIN", "Partidos y Torneos",
+                    conTabs("Partidos", new PanelPartidos(controlador), "Torneos", new PanelTorneos(controlador)));
+            agregarModulo("REPORTES", "Reportes", new PanelReportes(controlador));
+            agregarModulo("GRAFICAS", "Gráficas", new PanelGraficas(controlador));
         } else if (u instanceof Entrenador) {
-            agregarModulo("ENTRENADOR", "Partidos y Entrenamientos", crearPanelEnConstruccion("Marcadores, Estadísticas y Asistencia"));
-            agregarModulo("TURNOS", "Cambio de Turno", crearPanelEnConstruccion("Solicitud de Cambio de Turno"));
-            agregarModulo("TORNEOS", "Torneos", crearPanelEnConstruccion("Inscripción de Equipos e Individual en Torneos"));
+            agregarModulo("ENTRENADOR", "Partidos y Entrenamientos",
+                    conTabs("Partidos", new PanelPartidos(controlador), "Entrenamientos", new PanelEntrenamientos(controlador)));
+            agregarModulo("TURNOS", "Cambio de Turno", new PanelTurnos(controlador));
+            agregarModulo("TORNEOS", "Torneos", new PanelTorneos(controlador));
+            agregarModulo("GRAFICAS", "Gráficas", new PanelGraficas(controlador));
         } else if (u instanceof Fisioterapeuta) {
-            agregarModulo("TURNOS", "Cambio de Turno", crearPanelEnConstruccion("Solicitud de Cambio de Turno"));
-            agregarModulo("TORNEOS", "Torneos", crearPanelEnConstruccion("Torneos Individuales e Historial"));
+            agregarModulo("TURNOS", "Cambio de Turno", new PanelTurnos(controlador));
+            agregarModulo("TORNEOS", "Torneos", new PanelTorneos(controlador));
         } else if (u instanceof Socio) {
-            agregarModulo("DEPORTES_SOCIO", "Equipos y Ranking", crearPanelEnConstruccion("Inscripción a Equipos / Individual y Ranking"));
-            agregarModulo("PARTIDOS_SOCIO", "Partidos Individuales", crearPanelEnConstruccion("Programar y Registrar Partidos Individuales"));
-            agregarModulo("RESERVAS", "Reservar Instalación", crearPanelEnConstruccion("Reservas e Ingreso a Instalaciones"));
-            agregarModulo("TORNEOS", "Torneos y Bonos", crearPanelEnConstruccion("Torneos Individuales, Historial y Bonos"));
+            agregarModulo("DEPORTES_SOCIO", "Equipos y Ranking", new PanelSocioEquipos(controlador));
+            agregarModulo("PARTIDOS_SOCIO", "Partidos Individuales", new PanelSocioPartidos(controlador));
+            agregarModulo("RESERVAS", "Reservar Instalación", new PanelSocioReservas(controlador));
+            agregarModulo("TORNEOS", "Torneos y Bonos", new PanelTorneos(controlador));
         }
 
         agregarModulo("TIENDA", "Tienda y Cafetería", new PanelTiendaCafeteria(controlador, this));
+    }
+
+    /** Junta dos paneles en pestañas dentro de un mismo módulo. */
+    private JPanel conTabs(String titulo1, JPanel panel1, String titulo2, JPanel panel2) {
+        JTabbedPane tabs = new JTabbedPane();
+        tabs.addTab(titulo1, panel1);
+        tabs.addTab(titulo2, panel2);
+        JPanel contenedor = new JPanel(new BorderLayout());
+        contenedor.add(tabs, BorderLayout.CENTER);
+        return contenedor;
     }
 
     private void agregarModulo(String claveCard, String textoBoton, JPanel panel) {
@@ -148,13 +163,5 @@ public class VentanaPrincipal extends JFrame {
         if (u instanceof Entrenador) return "Entrenador";
         if (u instanceof Fisioterapeuta) return "Fisioterapeuta";
         return "Socio";
-    }
-
-    private JPanel crearPanelEnConstruccion(String titulo) {
-        JPanel p = new JPanel(new BorderLayout());
-        JLabel lbl = new JLabel("Módulo: " + titulo + " (Reemplazar por su JPanel)", SwingConstants.CENTER);
-        lbl.setFont(new Font("SansSerif", Font.PLAIN, 16));
-        p.add(lbl, BorderLayout.CENTER);
-        return p;
     }
 }

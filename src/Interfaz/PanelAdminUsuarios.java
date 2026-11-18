@@ -1,141 +1,98 @@
 package Interfaz;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
 import Usuarios.Socio;
 import Usuarios.Usuario;
 
-public class PanelAdminUsuarios extends JPanel {
+/** Gestión de usuarios: registrar socios, entrenadores, fisioterapeutas y administradores, y dar de baja socios. */
+public class PanelAdminUsuarios extends PanelBase {
 
-    private final ControladorGUI controlador;
-    private DefaultTableModel modeloTabla;
-    private JTable tablaUsuarios;
+    private final PanelTabla tabla = new PanelTabla("Usuarios Registrados", "ID", "Nombre", "Apellido", "Rol", "Puntos", "Estado");
 
     public PanelAdminUsuarios(ControladorGUI controlador) {
-        this.controlador = controlador;
-        inicializarComponentes();
-        cargarUsuarios();
+        super(controlador);
+        add(tabla, BorderLayout.CENTER);
+        add(UtilGUI.barra(
+                UtilGUI.boton("Registrar Socio", this, () -> registrar("Socio")),
+                UtilGUI.boton("Registrar Entrenador", this, () -> registrar("Entrenador")),
+                UtilGUI.boton("Registrar Fisioterapeuta", this, () -> registrar("Fisioterapeuta")),
+                UtilGUI.boton("Registrar Administrador", this, () -> registrar("Administrador")),
+                UtilGUI.boton("Dar de baja socio seleccionado", this, this::darDeBaja)), BorderLayout.SOUTH);
+        refrescar();
     }
 
-    private void inicializarComponentes() {
-        setLayout(new BorderLayout(10, 10));
-
-        modeloTabla = new DefaultTableModel(new String[]{"ID", "Nombre", "Apellido", "Rol", "Puntos", "Estado"}, 0) {
-            @Override
-            public boolean isCellEditable(int r, int c) {
-                return false;
-            }
-        };
-        tablaUsuarios = new JTable(modeloTabla);
-
-        JScrollPane scroll = new JScrollPane(tablaUsuarios);
-        scroll.setBorder(BorderFactory.createTitledBorder("Usuarios Registrados"));
-        add(scroll, BorderLayout.CENTER);
-
-        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton btnNuevoSocio = new JButton("Registrar Socio");
-        btnNuevoSocio.addActionListener(e -> mostrarDialogoNuevoSocio());
-
-        JButton btnBajaSocio = new JButton("Dar de Baja Socio Seleccionado");
-        btnBajaSocio.addActionListener(e -> darDeBajaSeleccionado());
-
-        panelBotones.add(btnNuevoSocio);
-        panelBotones.add(btnBajaSocio);
-        add(panelBotones, BorderLayout.SOUTH);
-    }
-
-    private void cargarUsuarios() {
-        modeloTabla.setRowCount(0);
-        for (Usuario u : controlador.getClub().getUsuarios().values()) {
+    @Override
+    protected void refrescar() {
+        tabla.limpiar();
+        for (Usuario u : club().getUsuarios().values()) {
             String estado = "Activo";
             if (u instanceof Socio && !((Socio) u).isActivo()) {
                 estado = "De baja";
             }
-            modeloTabla.addRow(new Object[]{
-                u.getIdUsuario(),
-                u.getNombre(),
-                u.getApellido(),
-                u.getClass().getSimpleName(),
-                u.getPuntosFidelidad(),
-                estado
-            });
+            tabla.agregar(u.getIdUsuario(), u.getNombre(), u.getApellido(), u.getClass().getSimpleName(),
+                    u.getPuntosFidelidad(), estado);
         }
     }
 
-    private void mostrarDialogoNuevoSocio() {
-        JTextField txtNombre = new JTextField();
-        JTextField txtApellido = new JTextField();
-        JTextField txtLogin = new JTextField();
-        JPasswordField txtPass = new JPasswordField();
-        JSpinner spnEdad = new JSpinner(new SpinnerNumberModel(18, 5, 100, 1));
-
-        JPanel formulario = new JPanel(new GridLayout(5, 2, 5, 5));
-        formulario.add(new JLabel("Nombre:"));
-        formulario.add(txtNombre);
-        formulario.add(new JLabel("Apellido:"));
-        formulario.add(txtApellido);
-        formulario.add(new JLabel("Login:"));
-        formulario.add(txtLogin);
-        formulario.add(new JLabel("Contraseña:"));
-        formulario.add(txtPass);
-        formulario.add(new JLabel("Edad:"));
-        formulario.add(spnEdad);
-
-        int opcion = JOptionPane.showConfirmDialog(this, formulario, "Registrar Nuevo Socio", JOptionPane.OK_CANCEL_OPTION);
-        if (opcion == JOptionPane.OK_OPTION) {
-            String login = txtLogin.getText().trim();
-            boolean disponible = controlador.getAutentificador().esLoginDisponible(
-                    login, new java.util.ArrayList<>(controlador.getClub().getUsuarios().values()));
-
-            if (!disponible) {
-                JOptionPane.showMessageDialog(this, "Ese login ya está en uso.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            String id = controlador.generarIdUsuario();
-            controlador.getClub().crearSocio(
-                    id,
-                    txtNombre.getText().trim(),
-                    txtApellido.getText().trim(),
-                    login,
-                    new String(txtPass.getPassword()).trim(),
-                    0,
-                    (int) spnEdad.getValue(),
-                    true
-            );
-            controlador.guardarTodo();
-            cargarUsuarios();
-            JOptionPane.showMessageDialog(this, "Socio registrado con ID: " + id);
+    private void registrar(String rol) {
+        Formulario f = new Formulario("Registrar " + rol)
+                .texto("nombre", "Nombre")
+                .texto("apellido", "Apellido")
+                .texto("login", "Login")
+                .clave("pass", "Contraseña");
+        boolean esSocio = rol.equals("Socio");
+        boolean esEmpleado = rol.equals("Entrenador") || rol.equals("Fisioterapeuta");
+        if (esSocio) {
+            f.entero("edad", "Edad", 18, 5, 100);
+        } else {
+            f.entero("puntos", "Puntos iniciales", 0, 0, 100000);
         }
-    }
-
-    private void darDeBajaSeleccionado() {
-        int fila = tablaUsuarios.getSelectedRow();
-        if (fila == -1) {
-            JOptionPane.showMessageDialog(this, "Seleccione un usuario de la tabla.");
+        if (esEmpleado) {
+            f.texto("codigo", "Código de descuento");
+        }
+        if (!f.mostrar(this)) {
             return;
         }
-        String id = (String) modeloTabla.getValueAt(fila, 0);
-        try {
-            controlador.getClub().realizarBajaJugador(id);
-            controlador.guardarTodo();
-            cargarUsuarios();
-            JOptionPane.showMessageDialog(this, "Socio dado de baja.");
-        } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        f.requerir("nombre", "apellido", "login", "pass");
+        if (esEmpleado) {
+            f.requerir("codigo");
         }
+
+        String login = f.valor("login");
+        if (!controlador.getAutentificador().esLoginDisponible(login, new ArrayList<>(club().getUsuarios().values()))) {
+            throw new IllegalArgumentException("Ese login ya está en uso.");
+        }
+
+        String id = controlador.generarIdUsuario();
+        String nombre = f.valor("nombre");
+        String apellido = f.valor("apellido");
+        String pass = f.valor("pass");
+        switch (rol) {
+            case "Socio" -> club().crearSocio(id, nombre, apellido, login, pass, 0, f.entero("edad"), true);
+            case "Entrenador" -> {
+                club().crearEntrenador(id, nombre, apellido, login, pass, f.entero("puntos"), f.valor("codigo"));
+                controlador.registrarCodigoDescuento(f.valor("codigo"));
+            }
+            case "Fisioterapeuta" -> {
+                club().crearFisioterapeuta(id, nombre, apellido, login, pass, f.entero("puntos"), f.valor("codigo"));
+                controlador.registrarCodigoDescuento(f.valor("codigo"));
+            }
+            default -> club().crearAdministrador(id, nombre, apellido, login, pass, f.entero("puntos"));
+        }
+        guardar();
+        refrescar();
+        info(rol + " registrado con ID: " + id);
+    }
+
+    private void darDeBaja() {
+        String id = tabla.requerirSeleccion(0, "Seleccione un usuario de la tabla.");
+        if (!UtilGUI.confirmar(this, "¿Dar de baja al socio con ID " + id + "?")) {
+            return;
+        }
+        club().realizarBajaJugador(id);
+        guardar();
+        refrescar();
+        info("Socio dado de baja.");
     }
 }

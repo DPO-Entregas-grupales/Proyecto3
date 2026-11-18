@@ -12,7 +12,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -24,10 +23,11 @@ import Tienda.ItemVenta;
 import Tienda.Producto;
 import Tienda.ProductoCafeteria;
 import Tienda.Venta;
+import Usuarios.Socio;
 
-public class PanelTiendaCafeteria extends JPanel {
+/** Compras en la tienda deportiva y la cafetería (todos los roles), con códigos, puntos y bonos de torneo. */
+public class PanelTiendaCafeteria extends PanelBase {
 
-    private final ControladorGUI controlador;
     private final VentanaPrincipal ventanaPrincipal;
 
     private JComboBox<String> cmbTipoTienda;
@@ -38,19 +38,22 @@ public class PanelTiendaCafeteria extends JPanel {
     private JTextField txtCodigoDescuento;
     private JCheckBox chkUsarPuntos;
     private JSpinner spnPuntos;
+    private JButton btnBono;
 
     private final List<ItemVenta> carrito = new ArrayList<>();
 
     public PanelTiendaCafeteria(ControladorGUI controlador, VentanaPrincipal ventanaPrincipal) {
-        this.controlador = controlador;
+        super(controlador);
         this.ventanaPrincipal = ventanaPrincipal;
         inicializarComponentes();
-        cargarCatalogo();
+        refrescar();
+    }
+
+    private boolean esCafeteria() {
+        return cmbTipoTienda.getSelectedIndex() == 1;
     }
 
     private void inicializarComponentes() {
-        setLayout(new BorderLayout(10, 10));
-
         JPanel panelTop = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelTop.add(new JLabel("Establecimiento:"));
         cmbTipoTienda = new JComboBox<>(new String[]{"Tienda Deportiva", "Cafetería"});
@@ -58,6 +61,8 @@ public class PanelTiendaCafeteria extends JPanel {
             carrito.clear();
             actualizarTablaCarrito();
             cargarCatalogo();
+            btnBono.setEnabled(puedeUsarBono());
+            txtCodigoDescuento.setEnabled(!esCafeteria());
         });
         panelTop.add(cmbTipoTienda);
         add(panelTop, BorderLayout.NORTH);
@@ -79,9 +84,7 @@ public class PanelTiendaCafeteria extends JPanel {
         panelAgregar.add(new JLabel("Cantidad:"));
         spnCantidad = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
         panelAgregar.add(spnCantidad);
-        JButton btnAgregar = new JButton("Agregar al carrito");
-        btnAgregar.addActionListener(e -> agregarAlCarrito());
-        panelAgregar.add(btnAgregar);
+        panelAgregar.add(UtilGUI.boton("Agregar al carrito", this, this::agregarAlCarrito));
         panelIzq.add(panelAgregar, BorderLayout.SOUTH);
 
         modeloCarrito = new DefaultTableModel(new String[]{"Producto", "Cant.", "Subtotal"}, 0) {
@@ -94,13 +97,10 @@ public class PanelTiendaCafeteria extends JPanel {
         JPanel panelDer = new JPanel(new BorderLayout());
         panelDer.setBorder(BorderFactory.createTitledBorder("Carrito de Compras"));
         panelDer.add(new JScrollPane(tablaCarrito), BorderLayout.CENTER);
-
-        JButton btnVaciar = new JButton("Vaciar carrito");
-        btnVaciar.addActionListener(e -> {
+        panelDer.add(UtilGUI.boton("Vaciar carrito", this, () -> {
             carrito.clear();
             actualizarTablaCarrito();
-        });
-        panelDer.add(btnVaciar, BorderLayout.SOUTH);
+        }), BorderLayout.SOUTH);
 
         panelCentro.add(panelIzq);
         panelCentro.add(panelDer);
@@ -118,100 +118,159 @@ public class PanelTiendaCafeteria extends JPanel {
         panelPago.add(chkUsarPuntos);
         panelPago.add(spnPuntos);
 
-        JButton btnComprar = new JButton("Confirmar Compra");
-        btnComprar.addActionListener(e -> procesarCompra());
-        panelPago.add(btnComprar);
+        btnBono = UtilGUI.boton("Comprar con bono de torneo", this, this::comprarConBono);
+        panelPago.add(btnBono);
+        panelPago.add(UtilGUI.boton("Confirmar Compra", this, this::procesarCompra));
 
         add(panelPago, BorderLayout.SOUTH);
     }
 
+    @Override
+    protected void refrescar() {
+        cargarCatalogo();
+        btnBono.setEnabled(puedeUsarBono());
+    }
+
+    private boolean puedeUsarBono() {
+        return usuario() instanceof Socio && !esCafeteria();
+    }
+
+    private Map<String, ? extends Producto> catalogo() {
+        return esCafeteria() ? tienda().obtenerProductosCafeteria() : tienda().obtenerArticulosTienda();
+    }
+
     private void cargarCatalogo() {
         modeloCatalogo.setRowCount(0);
-        boolean esCafeteria = cmbTipoTienda.getSelectedIndex() == 1;
-        Map<String, ? extends Producto> catalogo = esCafeteria
-                ? controlador.getTienda().obtenerProductosCafeteria()
-                : controlador.getTienda().obtenerArticulosTienda();
-
-        for (Producto p : catalogo.values()) {
-            modeloCatalogo.addRow(new Object[]{p.getNombre(), p.getPrecioBase(), p.getCantidadInventario()});
+        for (Producto p : catalogo().values()) {
+            modeloCatalogo.addRow(new Object[]{p.getNombre(), UtilGUI.dinero(p.getPrecioBase()), p.getCantidadInventario()});
         }
     }
 
     private void agregarAlCarrito() {
         int fila = tablaCatalogo.getSelectedRow();
         if (fila == -1) {
-            JOptionPane.showMessageDialog(this, "Seleccione un producto del catálogo.");
-            return;
+            throw new IllegalArgumentException("Seleccione un producto del catálogo.");
         }
         String nombre = (String) modeloCatalogo.getValueAt(fila, 0);
         int cantidad = (int) spnCantidad.getValue();
-        boolean esCafeteria = cmbTipoTienda.getSelectedIndex() == 1;
-
-        Producto producto = esCafeteria
-                ? controlador.getTienda().obtenerProductosCafeteria().get(nombre)
-                : controlador.getTienda().obtenerArticulosTienda().get(nombre);
+        Producto producto = catalogo().get(nombre);
 
         if (producto instanceof ProductoCafeteria) {
-            List<String> alergenos = controlador.getTienda().informarAlergenos(producto);
+            List<String> alergenos = tienda().informarAlergenos(producto);
             if (!alergenos.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Alérgenos de " + nombre + ": " + String.join(", ", alergenos));
+                info("Alérgenos de " + nombre + ": " + String.join(", ", alergenos));
             }
         }
+        agregarItem(producto, cantidad);
+        actualizarTablaCarrito();
+    }
 
+    private void agregarItem(Producto producto, int cantidad) {
         for (ItemVenta item : carrito) {
             if (item.getProducto() == producto) {
                 item.setCantidad(item.getCantidad() + cantidad);
-                actualizarTablaCarrito();
                 return;
             }
         }
         carrito.add(new ItemVenta(cantidad, producto));
-        actualizarTablaCarrito();
     }
 
     private void actualizarTablaCarrito() {
         modeloCarrito.setRowCount(0);
         for (ItemVenta item : carrito) {
-            modeloCarrito.addRow(new Object[]{
-                item.getProducto().getNombre(),
-                item.getCantidad(),
-                item.precioItemVenta()
-            });
+            modeloCarrito.addRow(new Object[]{item.getProducto().getNombre(), item.getCantidad(), UtilGUI.dinero(item.precioItemVenta())});
         }
     }
 
     private void procesarCompra() {
         if (carrito.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "El carrito está vacío.");
-            return;
+            throw new IllegalArgumentException("El carrito está vacío.");
         }
-        boolean esCafeteria = cmbTipoTienda.getSelectedIndex() == 1;
-        String tipo = esCafeteria ? Venta.CAFETERIA : Venta.TIENDADEPORTIVA;
-        String codigo = esCafeteria ? "" : txtCodigoDescuento.getText().trim();
+        String tipo = esCafeteria() ? Venta.CAFETERIA : Venta.TIENDADEPORTIVA;
+        String codigo = esCafeteria() ? "" : txtCodigoDescuento.getText().trim();
+        if (codigo.toUpperCase().startsWith("BONO-")) {
+            throw new IllegalArgumentException("Los bonos se redimen con el botón \"Comprar con bono de torneo\".");
+        }
         int puntos = chkUsarPuntos.isSelected() ? (int) spnPuntos.getValue() : 0;
 
         LocalDateTime ahora = LocalDateTime.now();
-        String idVenta = controlador.getTienda().generarIdVenta();
-        String idUsuario = controlador.getUsuarioAutenticado().getIdUsuario();
+        String idVenta = tienda().generarIdVenta();
+        String idUsuario = usuario().getIdUsuario();
 
-        try {
-            if (puntos > 0) {
-                controlador.getTienda().realizarVentaConPuntos(
-                        idVenta, ahora.toLocalDate().toString(), ahora.getHour(),
-                        idUsuario, codigo, new ArrayList<>(carrito), controlador.getClub(), tipo, puntos);
-            } else {
-                controlador.getTienda().realizarVenta(
-                        idVenta, ahora.toLocalDate().toString(), ahora.getHour(), null,
-                        idUsuario, codigo, new ArrayList<>(carrito), controlador.getClub(), tipo);
-            }
-            controlador.guardarTodo();
-            carrito.clear();
-            actualizarTablaCarrito();
-            cargarCatalogo();
-            ventanaPrincipal.actualizarPuntosEncabezado();
-            JOptionPane.showMessageDialog(this, "Compra registrada con éxito (ID: " + idVenta + ").");
-        } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error en compra", JOptionPane.ERROR_MESSAGE);
+        if (puntos > 0) {
+            tienda().realizarVentaConPuntos(idVenta, ahora.toLocalDate().toString(), ahora.getHour(),
+                    idUsuario, codigo, new ArrayList<>(carrito), club(), tipo, puntos);
+        } else {
+            tienda().realizarVenta(idVenta, ahora.toLocalDate().toString(), ahora.getHour(), null,
+                    idUsuario, codigo, new ArrayList<>(carrito), club(), tipo);
         }
+        terminarCompra();
+    }
+
+    /** Compra con bono: se arma el carrito, se aplica el bono y solo al confirmar se descuenta inventario y bono. */
+    private void comprarConBono() {
+        Socio socio = (Socio) usuario();
+        if (!socio.tieneBonosDisponibles()) {
+            throw new IllegalArgumentException("No tiene ningún bono de descuento por redimir.");
+        }
+        if (carrito.isEmpty()) {
+            throw new IllegalArgumentException("Agregue productos al carrito antes de usar un bono.");
+        }
+        LocalDateTime ahora = LocalDateTime.now();
+        Venta venta = tienda().iniciarCompraTienda(tienda().generarIdVenta(), ahora.toLocalDate().toString(),
+                ahora.getHour(), socio.getIdUsuario(), new ArrayList<>(carrito), club());
+
+        List<String> bonos = new ArrayList<>();
+        for (String bono : socio.getBonosDescuento()) {
+            bonos.add(bono);
+        }
+        Formulario f = new Formulario("Aplicar bono (subtotal " + UtilGUI.dinero(venta.getSubTotal()) + ")")
+                .combo("bono", "Bono a aplicar", bonos);
+        if (!f.mostrar(this)) {
+            return;
+        }
+        tienda().aplicarBonoDescuento(venta, f.valor("bono"));
+        String mensaje = "Bono aplicado. Descuento: " + UtilGUI.dinero(venta.getDescuento());
+
+        if (bonos.size() > 1 && UtilGUI.confirmar(this, mensaje + "\n¿Desea aplicar otro bono a esta compra?")) {
+            try {
+                tienda().aplicarBonoDescuento(venta, "");
+            } catch (IllegalArgumentException e) {
+                UtilGUI.error(this, "No se pudo aplicar: " + e.getMessage());
+            }
+        }
+        if (UtilGUI.confirmar(this, "Descuento total: " + UtilGUI.dinero(venta.getDescuento()) + "\n¿Confirmar la compra?")) {
+            tienda().confirmarCompraTienda(venta);
+            terminarCompra();
+        } else {
+            info("Compra cancelada. El inventario y el bono no cambiaron.");
+        }
+    }
+
+    private void terminarCompra() {
+        guardar();
+        carrito.clear();
+        actualizarTablaCarrito();
+        cargarCatalogo();
+        ventanaPrincipal.actualizarPuntosEncabezado();
+        List<Venta> ventas = tienda().getVentas();
+        info(resumen(ventas.get(ventas.size() - 1)));
+    }
+
+    private String resumen(Venta venta) {
+        StringBuilder sb = new StringBuilder("COMPRA REALIZADA: " + venta.getIdVenta() + "\n");
+        for (ItemVenta item : venta.getItemsVenta()) {
+            sb.append("- ").append(item.getProducto().getNombre()).append(" x").append(item.getCantidad())
+                    .append(" = ").append(UtilGUI.dinero(item.precioItemVenta())).append("\n");
+        }
+        sb.append("Subtotal: ").append(UtilGUI.dinero(venta.getSubTotal())).append("\n");
+        if (venta.getDescuento() > 0) {
+            sb.append("Descuento: -").append(UtilGUI.dinero(venta.getDescuento())).append("\n");
+        }
+        String impuestos = Venta.CAFETERIA.equals(venta.getTipo()) ? " (con impuesto al consumo y propina sugerida)" : " (con IVA)";
+        sb.append("Total a pagar").append(impuestos).append(": ").append(UtilGUI.dinero(venta.getTotal())).append("\n");
+        sb.append("Puntos ganados: ").append((int) venta.getPuntosGanados()).append("\n");
+        sb.append("Sus puntos de fidelidad: ").append(usuario().getPuntosFidelidad());
+        return sb.toString();
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import Modelo.Autentificador;
 import Modelo.ClubDeportivoSeneca;
 import Modelo.Tienda;
+import Partidos.Torneo;
 import Usuarios.Empleado;
 import Usuarios.Invitado;
 import Usuarios.Socio;
@@ -56,6 +57,11 @@ public class ControladorGUI {
         }
     }
 
+    /** Registra el código de descuento de un empleado recién creado. */
+    public void registrarCodigoDescuento(String codigo) {
+        tienda.getCalculadoraDescuento().agregarCodigoValido(codigo);
+    }
+
     public void guardarTodo() {
         club.salvarUsuarios(RUTA_USUARIOS);
         club.salvarClubDeportivo(RUTA_CLUB);
@@ -97,6 +103,31 @@ public class ControladorGUI {
 
     public String generarIdPartido() {
         return String.valueOf(contadorPartidos++);
+    }
+
+    /** Siguiente ID de torneo con el formato TOR-n. */
+    public String generarIdTorneo() {
+        int max = 0;
+        for (String id : club.getTorneos().keySet()) {
+            String digitos = id.replaceAll("[^0-9]", "");
+            if (!digitos.isEmpty()) {
+                max = Math.max(max, Integer.parseInt(digitos));
+            }
+        }
+        return "TOR-" + (max + 1);
+    }
+
+    /** Nombre legible de un participante de torneo (si es un usuario) o la clave tal cual (si es un equipo). */
+    public String nombreParticipante(String clave) {
+        Usuario usuario = club.getUsuarios().get(clave);
+        if (usuario != null) {
+            return usuario.getNombre() + " " + usuario.getApellido();
+        }
+        return clave;
+    }
+
+    public boolean torneoEnCurso(Torneo t) {
+        return Torneo.EN_CURSO.equalsIgnoreCase(t.getEstado());
     }
 
     private int obtenerMaxId(Iterable<String> llaves) {
